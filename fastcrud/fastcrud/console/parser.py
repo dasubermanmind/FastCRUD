@@ -1,5 +1,8 @@
 import argparse
+import os
 from pathlib  import Path
+
+from fastcrud.fastcrud.console.settings.settings import MODEL_PATH
 
 class Parser:
 
@@ -7,7 +10,7 @@ class Parser:
         self.parser = argparse.ArgumentParser()
         self.target_path = '' # Add settings for file path
 
-    # This will in the future also take care of adding migration files, updating schemas etc...
+    # TODO: This will in the future also take care of adding migration files, updating schemas etc...
     def add_arguments(self, param: str):
         if param == '--m':
             self.parser.add_argument('--m' ,dest=param, type=str, help='Create a Model instance')
@@ -26,7 +29,11 @@ class Parser:
             if Path.exists(self.target_path):
                 print('The Model directory already exists')
             else:
-                pass
-                # TODO: Create the file path
-                # TODO: Factory pattern. Create the model instance
+                try:
+                    os.mkdir(os.path.dirname(MODEL_PATH), exist_ok=False)
+                    with open(MODEL_PATH, 'w') as StreamWriter:
+                        # TODO: Update with Model Factory
+                        StreamWriter.write(f'{model}.py')
+                except OSError as os:
+                    print(f'Failed To Create: { os }')
                 
