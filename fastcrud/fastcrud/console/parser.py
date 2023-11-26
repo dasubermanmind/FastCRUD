@@ -1,39 +1,46 @@
 import argparse
-import os
+from os import path, mkdir
+
 from pathlib  import Path
 
 from fastcrud.fastcrud.console.settings.settings import MODEL_PATH
 
 class Parser:
 
-    def __init__(self):
-        self.parser = argparse.ArgumentParser()
-        self.target_path = '' # Add settings for file path
+    @staticmethod
+    def add_arguments(parser: argparse.ArgumentParser):
+        parser.add_argument('--m' , type=str, help='Create a Model instance')
+        parser.add_argument('--V' , type=str, help='Create a View instance')
+        parser.add_argument('--g' , type=str, help='Create a Generator to create everything')
 
-    # TODO: This will in the future also take care of adding migration files, updating schemas etc...
-    def add_arguments(self, param: str):
-        if param == '--m':
-            self.parser.add_argument('--m' ,dest=param, type=str, help='Create a Model instance')
-        elif param == '--c':
-            self.parser.add_argument('--c' ,dest=param, type=str, help='Create a Controller instance')
-        elif param == '--g':
-            self.parser.add_argument('--g' ,dest=param, type=str, help='Create a Generator to create everything')
-
-
-    def parser(self):
-        args = self.parser.parse_args()
+    @staticmethod
+    def parser(parser: argparse.ArgumentParser):
+        """
+        Parser is responsible
+        """
+        args = parser.parse_args()
+        
         return args
 
-    def build_dir_and_models(self, model='', controller='', generator=''):
+    @staticmethod
+    def build_dir_and_models(model):
+        """
+        
+        """
         if model != '':
-            if Path.exists(self.target_path):
+            if path.exists(f'/model/{model}'):
                 print('The Model directory already exists')
             else:
                 try:
-                    os.mkdir(os.path.dirname(MODEL_PATH), exist_ok=False)
+                    mkdir(path.dirname(MODEL_PATH))
                     with open(MODEL_PATH, 'w') as StreamWriter:
                         # TODO: Update with Model Factory
                         StreamWriter.write(f'{model}.py')
                 except OSError as os:
                     print(f'Failed To Create: { os }')
-                
+
+    def instantiate_model_properties(self, model = None):
+        pass
+
+    def build_views(self, model=None, controller=None):
+        pass

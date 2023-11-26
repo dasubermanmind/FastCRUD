@@ -1,19 +1,12 @@
 
-from dataclasses import dataclass
-from typing import Any, Dict
 
+from typing import Any, Dict, List
 
-@dataclass
 class Application:
     """
     Creates a new Ghost Instance based on the commands passed in.
     """
-    
-    ghost: Any
-
-    events: Any
-
-    command: str
-
-    command_map: Dict[Any, Any] = {}
-    
+    self.ghost = None, 
+    self.events = None
+    self.command: List[str] = []
+    self.command_map = {}
