@@ -32,10 +32,10 @@ class Parser:
                 print('The Model directory already exists')
             else:
                 try:
-                    mkdir(path.dirname(MODEL_PATH))
-                    with open(MODEL_PATH, 'w') as StreamWriter:
+                    mkdir(path.dirname('model/'))
+                    with open(f'model/{model}.py', 'w') as StreamWriter:
                         # TODO: Update with Model Factory
-                        StreamWriter.write(f'{model}.py')
+                        StreamWriter.write(f'class {model}: pass')
                 except OSError as os:
                     print(f'Failed To Create: { os }')
 
