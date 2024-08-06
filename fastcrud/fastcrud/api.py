@@ -1,11 +1,15 @@
 
-from typing import List
+import os
+from typing import List, Optional, Tuple
 
 
 class Generator:
-    def generate_model_content(name: str, properties: List[str]):
-        props = "\n".join([f"{prop} = Column(String, index=True)" for prop in properties])
-        init_section = "\n".join([f"self.{prop} = {prop}" for prop in properties])
+    def generate_model_content(name: str, properties: List[str], relationship: Optional[List[str]]):
+        props = "\n".join([f"{prop} = Column({ptype}, index=True)" for prop, ptype in properties])
+        added_relationship = "\n".join([f"{rel}_id = Columns(Integer, ForeignKey('{rel.lower()}.id'))
+                                  \n{rel} = relationship('{rel}')" for rel in relationship])
+        init_args = ", ".join([prop for prop, _ in properties] + [f"{rel}_id" for rel in relationship])
+        init_section = "\n".join([f"self.{prop} = {prop}" for prop, _ in properties] + f"self.{rel}_id = {rel}_id" for rel in relationship)
         model = f"""
 from sqlalchemy import Column, Integer, String
 from db.base import Base
@@ -14,12 +18,13 @@ class {name}(Base):
     __tablename__ = '{name.lower()}s'
     id = Column(Integer, primary_key=True, index=True)
     {props}
+    {added_relationship}
 
-    def __init__(self, {','.join(properties)}):
-        {init_section}
+    def __init__(self, {init_args}):
+    {init_section}
         """
         return model
-
+    # Update
     def generate_crud_content(name: str,properties: List[str]):
         item_args = ", ".join([f"{props}: str" for props in properties])
         item_assign = "\n".join([f"db_item.{prop} = item.{prop}" for prop in properties])
@@ -55,7 +60,7 @@ def delete_{name.lower()}(db: Session, arg_id: int):
     return db_arg
         """
         return crud
-
+    # update
     def generat_router_content(name: str, properties: List[str]):
         router = f"""
 from fastapi import APIRouter, Depends, HTTPException
@@ -114,4 +119,7 @@ def delete_item(item_id: int, db: Session = Depends(get_db)):
         """
         return router
 
-    
+    def update_or_create_model(name: str, properties: List[Tuple[str, str]], relationship: List[str]):
+        # Search for the model dir for pre-existing models to create a relationship with
+        model_path = os.path.join("models", f"{name.lower().py}")
+
