@@ -75,7 +75,6 @@ def delete_{name.lower()}(db: Session, arg_id: int):
         return crud
     
 
-
     def generat_router_content(name: str, properties: List[str]):
         router = f"""
 from fastapi import APIRouter, Depends, HTTPException
@@ -134,7 +133,29 @@ def delete_item(item_id: int, db: Session = Depends(get_db)):
         """
         return router
 
+
     def update_or_create_model(name: str, properties: List[Tuple[str, str]], relationship: List[str]):
         # Search for the model dir for pre-existing models to create
         model_path = os.path.join("models", f"{name.lower().py}")
 
+    
+
+    def start():
+        # Setup Basic directories
+        model_path = os.path.join("models", "model.py")
+        crud_path = os.path.join("crud", "db.py")
+        router_path = os.path.join("routers", "routers.py")
+        with open(router_path, "w") as f:
+            f.write(router_path)
+            f.write(model_path)
+            f.wite(crud_path)
+        
+        with open(".env", "w") as f:
+            f.write("FILL THIS OUT")
+        
+        with open("README.md", "w") as f:
+            f.write("FILL THIS OUT")
+
+        with open("main.py", "w") as f:
+            pass
+            #f.write()

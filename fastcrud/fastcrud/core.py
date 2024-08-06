@@ -83,3 +83,9 @@ def py_model(name: str, properties: List[str]=typer.Option([], "--property", "-p
     with open(py_model_path, "w") as f:
         f.write(py_actions)
     print(f"Model Created: {name} at {py_model_path}")
+
+
+@app.command()
+def start():
+    pass
+    # Gives you boilerplate FastAPI
