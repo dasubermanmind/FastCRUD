@@ -41,20 +41,13 @@ def all(name: str, properties: List[str]=typer.Option([], "--property", "-p")):
         f.write(model_created)
     print(f"Model Created: {name} at {model_path}")
 
+    # Crud
     crud_path = os.path.join("crud", f"{name.lower()}.py")
     crud_actions = genny.generate_crud_content()
 
     with open(crud_path, "w") as f:
         f.write(crud_actions)
     print(f'Crud Created: {name.lower()} at {crud_path}')
-
-    # Crud
-    model_created = genny.generate_model_content()
-    model_path = os.path.join("models", f"{name.lower()}.py")
-    
-    with open(model_path, "w") as f:
-        f.write(model_created)
-    print(f"Model Created: {name} at {model_path}")
 
     # Router
     router_path = os.path.join("routers", f"{name.lower()}.py")
