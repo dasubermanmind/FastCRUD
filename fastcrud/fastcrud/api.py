@@ -4,12 +4,14 @@ from typing import List, Tuple
 
 
 class Generator:
+
+    # This is the Data access object for interacting with the db
     def generate_model_content(name: str, properties: List[str]):
         props = "\n".join([f"{prop} = Column(String, index=True)" for prop in properties])
         init_section = "\n".join([f"self.{prop} = {prop}" for prop in properties])
         model = f"""
 from sqlalchemy import Column, Integer, String
-from db.base import Base
+from db.base import Base # DB Base
 
 class {name}(Base):
     __tablename__ = '{name.lower()}s'
@@ -22,7 +24,20 @@ class {name}(Base):
         return model
     
 
+    # Model from Pydantic to be used for Validation
+    def generate_pydantic_model(name: str, properties: List[str]):
+        props = "\n".join([prop for prop in properties])
+        prop_types = "\n".join([type(prop) for prop in properties])
+        model = f"""
+from pydantic import BaseModel
 
+class {name}(BaseModel):
+    {props}: {prop_types}
+        """
+        return model
+    
+
+    # The actual CRUD Operations
     def generate_crud_content(name: str, properties: List[str]):
         item_args = ", ".join([f"{props}: str" for props in properties])
         item_assign = "\n".join([f"db_item.{prop} = item.{prop}" for prop in properties])
