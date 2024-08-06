@@ -18,6 +18,25 @@ Coming soon
 Coming Soon
 
 
+# Features
+1) Pydantic Model Generation
+2) Data Access Object
+3) Routers Generation
+4) Scaffold (generates everything)
+5) Boilerplate FastAPI
+6) Automatic Entity Diagram Generation [IP]
+
+
+# In the works
+1) Relationships on models
+2) Finalizing ERD Visualization
+
+## Services
+1) Rest [+]
+2) Graphql []
+3) TBD...
+
+
 ## Contribution.
 All are welcome!
 
