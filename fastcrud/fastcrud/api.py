@@ -36,8 +36,7 @@ class {name}(BaseModel):
         """
         return model
     
-
-    # The actual CRUD Operations
+    # The DB Operations
     def generate_crud_content(self, name: str, properties: List[str]):
         item_args = ", ".join([f"{props}: str" for props in properties])
         item_assign = "\n".join([f"db_item.{prop} = item.{prop}" for prop in properties])
@@ -74,7 +73,7 @@ def delete_{name.lower()}(db: Session, arg_id: int):
         """
         return crud
     
-
+    # TODO: Add async version
     def generat_router_content(self, name: str, properties: List[str]):
         router = f"""
 from fastapi import APIRouter, Depends, HTTPException
@@ -138,31 +137,33 @@ def delete_item(item_id: int, db: Session = Depends(get_db)):
         # Search for the model dir for pre-existing models to create
         model_path = os.path.join("models", f"{name.lower().py}")
 
-    
+     
+    # Get all the generic versions working first
     def start(self):
+        pass
         # Setup Basic directories
-        model_path = os.path.join("models", "model.py")
-        crud_path = os.path.join("crud", "db.py")
-        router_path = os.path.join("routers", "routers.py")
-        with open(router_path, "w") as f:
-            f.write(router_path)
-            f.write(model_path)
-            f.wite(crud_path)
+        # model_path = os.path.join("models", "model.py")
+        # crud_path = os.path.join("crud", "db.py")
+        # router_path = os.path.join("routers", "routers.py")
+        # with open(router_path, "w") as f:
+        #     f.write(router_path)
+        #     f.write(model_path)
+        #     f.wite(crud_path)
         
-        with open(".env", "w") as f:
-            f.write("FILL THIS OUT")
+        # with open(".env", "w") as f:
+        #     f.write("FILL THIS OUT")
         
-        with open(".gitignore", "w") as f:
-            f.write(".env")
+        # with open(".gitignore", "w") as f:
+        #     f.write(".env")
 
-        test_path = os.path.join("tests", f"test_main.py")
-        #test_actions = 
-        with open(test_path, "w") as f:
-            f.write("Update this with the test actions")
+        # test_path = os.path.join("tests", f"test_main.py")
+        # #test_actions = 
+        # with open(test_path, "w") as f:
+        #     f.write("Update this with the test actions")
         
-        with open("README.md", "w") as f:
-            f.write("What does your service do?")
+        # with open("README.md", "w") as f:
+        #     f.write("What does your service do?")
 
-        with open("main.py", "w") as f:
-            pass
-            #f.write()
+        # with open("main.py", "w") as f:
+        #     pass
+        #     #f.write()
